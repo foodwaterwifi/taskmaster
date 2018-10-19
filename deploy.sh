@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export MIX_ENV=prod
-export PORT=4791
+export PORT=4795
 export NODEBIN=`pwd`/assets/node_modules/.bin
 export PATH="$PATH:$NODEBIN"
 
@@ -16,8 +16,8 @@ mix compile # compile source
 mix phx.digest # compress static files
 
 echo "Generating release..."
-mix release # generate the release
+mix release --env=prod # generate the release
 
 echo "Starting app..."
 
-_build/prod/rel/memory/bin/memory foreground # start app in the foreground
+_build/prod/rel/taskmaster/bin/taskmaster foreground # start app in the foreground
