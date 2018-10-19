@@ -14,7 +14,7 @@
 
   <li>
     <strong>Assignee:</strong>
-    <%= @task.user.username %>
+    <%= if @task.user do @task.user.username else "" end %>
   </li>
 
   <li>

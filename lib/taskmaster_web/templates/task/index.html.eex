@@ -16,7 +16,7 @@
     <tr>
       <td scope="row"><%= task.title %></td>
       <td><%= task.desc %></td>
-      <td><%= task.user.username %></td>
+      <td><%= if task.user do task.user.username else "" end %></td>
       <td><%= task.completed %></td>
       <td><%= task.time_spent %></td>
 

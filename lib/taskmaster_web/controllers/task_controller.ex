@@ -15,10 +15,8 @@ defmodule TaskmasterWeb.TaskController do
   end
 
   def create(conn, %{"task" => task_params}) do
-    IO.puts("Creating a new task!")
-    IO.inspect(task_params)
     task_params = process_task_params(task_params)
-    IO.inspect(task_params)
+
     case Tasks.create_task(task_params) do
       {:ok, task} ->
         conn
@@ -43,6 +41,7 @@ defmodule TaskmasterWeb.TaskController do
 
   def update(conn, %{"id" => id, "task" => task_params}) do
     task = Tasks.get_task!(id)
+
     task_params = process_task_params(task_params)
 
     case Tasks.update_task(task, task_params) do
