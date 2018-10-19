@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no, user-scalable=no"/>
+    <title>Taskmaster · Phoenix Framework</title>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-sm navbar-light bg-white mb-3">
+        <%= link "Taskmaster", to: Routes.page_path(@conn, :index), class: "navbar-brand" %>
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <%= link "Tasks", to: Routes.task_path(@conn, :index), class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link "Users", to: Routes.user_path(@conn, :index), class: "nav-link" %>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav navbar-right">
+          <%= if @current_user do %>
+            <p class="my-3">
+              Hello, <%= @current_user.username %> |
+              <%= link("Logout", to: Routes.session_path(@conn, :delete),
+                method: :delete) %>
+            </p>
+          <% else %>
+            <li class="dropdown">
+              <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Login/Register</a>
+              <ul class="dropdown-menu">
+                <li>
+                  <%= form_for @conn, Routes.session_path(@conn, :create),
+                          [class: "form-inline"], fn f -> %>
+                    <%= text_input f, :username, class: "form-control mx-3 my-3" %>
+                    <%= submit "Login", class: "btn btn-primary mx-3" %>
+                    <%= link "Register", to: Routes.user_path(@conn, :new), class: "btn btn-secondary" %>
+                  <% end %>
+                </li>
+              </ul>
+            </li>
+          <% end %>
+        </ul>
+      </nav>
+
+      <div class="row">
+        <div class="col-12">
+          <%= if get_flash(@conn, :info) do %>
+            <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+          <% end %>
+          <%= if get_flash(@conn, :error) do %>
+            <p class="alert alert-danger" role="alert">
+              <%= get_flash(@conn, :error) %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+
+      <%= render @view_module, @view_template, assigns %>
+    </div>
+
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

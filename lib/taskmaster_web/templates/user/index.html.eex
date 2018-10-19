@@ -1,0 +1,26 @@
+<h1>User List</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Username</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for user <- @users do %>
+    <tr>
+      <td><%= user.username %></td>
+
+      <td>
+        <%= link "Profile", to: Routes.user_path(@conn, :show, user), class: "btn btn-secondary" %>
+      <%= if @current_user && @current_user.username == "admin" && user.username != "admin" do %>
+        <%= link "Delete", to: Routes.user_path(@conn, :delete, user),
+        method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-secondary" %>
+      <% end %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

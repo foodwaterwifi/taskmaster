@@ -1,0 +1,8 @@
+<h1>User Profile</h1>
+
+<strong>Username:</strong>
+<%= @user.username %>
+
+<p>Nothing to see here.</p>
+
+<span><%= link "Back", to: Routes.user_path(@conn, :index), class: "btn btn-primary" %></span>

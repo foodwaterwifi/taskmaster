@@ -1,0 +1,33 @@
+<h1>Task</h1>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @task.title %>
+  </li>
+
+  <li>
+    <strong>Desc:</strong>
+    <%= @task.desc %>
+  </li>
+
+  <li>
+    <strong>Assignee:</strong>
+    <%= @task.user.username %>
+  </li>
+
+  <li>
+    <strong>Completed:</strong>
+    <%= @task.completed %>
+  </li>
+
+  <li>
+    <strong>Time spent:</strong>
+    <%= Integer.to_string(@task.time_spent) <> " minutes" %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.task_path(@conn, :edit, @task), class: "btn btn-primary" %></span>
+<span><%= link "Back", to: Routes.task_path(@conn, :index), class: "btn btn-primary" %></span>
