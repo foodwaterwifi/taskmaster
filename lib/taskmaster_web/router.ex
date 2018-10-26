@@ -14,11 +14,25 @@ defmodule TaskmasterWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :ajax do
+    plug :accepts, ["json"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug TaskmasterWeb.Plugs.FetchSession # FIXME: "FetchUser"
+  end
+
+  scope "/ajax", TaskmasterWeb do
+    pipe_through :ajax
+    resources "/time-blocks", TimeBlockController
+  end
+
   scope "/", TaskmasterWeb do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/users", UserController
+    resources "/users", UserController do
+      get "/report", UserController, :report, as: :report
+    end
     resources "/tasks", TaskController
     resources "/sessions", SessionController, only: [:create, :delete], singleton: true
   end

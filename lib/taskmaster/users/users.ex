@@ -35,10 +35,31 @@ defmodule Taskmaster.Users do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
-  def get_user(id), do: Repo.get(User, id)
+  def get_user!(id) do Repo.get!(User, id) |> Repo.preload(:manager) end
+  def get_user(id) do Repo.get(User, id) |> Repo.preload(:manager) end
 
   def get_user_by_username(username), do: Repo.get_by(User, username: username)
+
+  # Lists the managees of a user with provided id. If the user does not exist, returns nil.
+  def list_user_managees(id) do
+    user = Repo.get(User, id)
+    if user do
+      user = Repo.preload(user, :managees)
+      user.managees
+    else
+      nil
+    end
+  end
+
+  def list_user_tasks(id) do
+    user = Repo.get(User, id)
+    if user do
+      user = Repo.preload(user, [tasks: :time_blocks])
+      user.tasks
+    else
+      nil
+    end
+  end
 
   @doc """
   Creates a user.
@@ -103,5 +124,12 @@ defmodule Taskmaster.Users do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  @doc """
+    Return whether the user with the given id exists.
+  """
+  def user_exists(id) do
+    Repo.get(User, id) != nil
   end
 end

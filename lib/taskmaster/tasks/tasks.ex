@@ -19,7 +19,7 @@ defmodule Taskmaster.Tasks do
   """
   def list_tasks do
     Repo.all from task in Task,
-      preload: [:user]
+      preload: [:assignee, :time_blocks]
   end
 
   @doc """
@@ -36,12 +36,22 @@ defmodule Taskmaster.Tasks do
       ** (Ecto.NoResultsError)
 
   """
-  def get_task!(id), do: Repo.get!(Task, id)
+  def get_task!(id) do
+    Repo.get!(Task, id) |> Repo.preload([:assignee, :time_blocks])
+  end
 
   def get_task(id) do
-    Repo.one from task in Task,
-      where: task.id == ^id,
-      preload: [:user]
+    Repo.get(Task, id) |> Repo.preload([:assignee, :time_blocks])
+  end
+
+  def list_task_time_blocks(id) do
+    task = Repo.get(Task, id)
+    if task do
+      task = Repo.preload(task, :time_blocks)
+      task.time_blocks
+    else
+      nil
+    end
   end
 
   @doc """

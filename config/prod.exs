@@ -26,7 +26,7 @@ config :taskmaster, TaskmasterWeb.Endpoint,
   root: ".",
   version: Application.spec(:phoenix_distillery, :vsn),
   http: [:inet6, port: System.get_env("PORT") || 4000],
-  url: [host: "hw06.kotonoha.io", port: 80],
+  url: [host: "tasks2.kotonoha.io", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production

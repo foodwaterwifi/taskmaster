@@ -1,0 +1,24 @@
+<%= if @current_user do %>
+  <h1>Task Report for "<%= @current_user.username %>"</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Completed</th>
+        <th>Time Spent</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for task <- @tasks do %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= task.completed %></td>
+          <td><%= TaskmasterWeb.TaskView.calculate_time_spent(task) %></td>
+          <td>
+          </td>
+        </tr>
+      <% end %>
+    </body>
+  </table>
+<% end %>

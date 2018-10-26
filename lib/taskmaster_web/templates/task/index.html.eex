@@ -7,7 +7,7 @@
       <th scope="col">Description</th>
       <th scope="col">Assignee</th>
       <th scope="col">Completed</th>
-      <th scope="col">Time spent</th>
+      <th scope="col">Time Spent</th>
       <th></th>
     </tr>
   </thead>
@@ -16,15 +16,17 @@
     <tr>
       <td scope="row"><%= task.title %></td>
       <td><%= task.desc %></td>
-      <td><%= if task.user do task.user.username else "" end %></td>
+      <td><%= if task.assignee do task.assignee.username else "" end %></td>
       <td><%= task.completed %></td>
-      <td><%= task.time_spent %></td>
+      <td><%= calculate_time_spent(task) %></td>
 
       <td>
         <%= link "Show", to: Routes.task_path(@conn, :show, task), class: "btn btn-secondary" %>
-        <%= link "Edit", to: Routes.task_path(@conn, :edit, task), class: "btn btn-secondary" %>
-        <%= link "Delete", to: Routes.task_path(@conn, :delete, task),
-        method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-secondary" %>
+        <%= if @current_user do %>
+          <%= link "Edit", to: Routes.task_path(@conn, :edit, task), class: "btn btn-secondary" %>
+          <%= link "Delete", to: Routes.task_path(@conn, :delete, task),
+          method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-secondary" %>
+        <% end %>
       </td>
     </tr>
 <% end %>

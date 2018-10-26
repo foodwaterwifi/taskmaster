@@ -7,11 +7,11 @@ defmodule Taskmaster.Repo.Migrations.CreateTasks do
       add :desc, :string, default: "Description", null: false
       add :completed, :boolean, default: false, null: false
       add :time_spent, :integer, default: 0, null: false
-      add :user_id, references(:users, on_delete: :nothing)
+      add :assignee_id, references(:users, on_delete: :nilify_all) # a task belongs to a user
 
       timestamps()
     end
 
-    create index(:tasks, [:user_id])
+    create index(:tasks, [:assignee_id])
   end
 end

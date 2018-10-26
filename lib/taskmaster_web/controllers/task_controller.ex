@@ -15,8 +15,6 @@ defmodule TaskmasterWeb.TaskController do
   end
 
   def create(conn, %{"task" => task_params}) do
-    task_params = process_task_params(task_params)
-
     case Tasks.create_task(task_params) do
       {:ok, task} ->
         conn
@@ -41,8 +39,12 @@ defmodule TaskmasterWeb.TaskController do
 
   def update(conn, %{"id" => id, "task" => task_params}) do
     task = Tasks.get_task!(id)
-
-    task_params = process_task_params(task_params)
+    current_user = conn.assigns[:current_user]
+    IO.puts "Here's my conn for edit"
+    IO.inspect conn
+    current_user_id = if current_user do current_user.id else nil end
+    task_params = Map.put(task_params, "assigned_by", current_user_id)
+    IO.inspect task_params
 
     case Tasks.update_task(task, task_params) do
       {:ok, task} ->
@@ -62,18 +64,5 @@ defmodule TaskmasterWeb.TaskController do
     conn
     |> put_flash(:info, "Task deleted successfully.")
     |> redirect(to: Routes.task_path(conn, :index))
-  end
-
-  def process_task_params(task_params) do
-    if Map.has_key?(task_params, "assignee") do
-      user = Taskmaster.Users.get_user_by_username(task_params["assignee"])
-      user_id = if user do user.id else -1 end
-
-      task_params
-      |> Map.delete("assignee")
-      |> Map.put("user_id", user_id)
-    else
-      task_params
-    end
   end
 end

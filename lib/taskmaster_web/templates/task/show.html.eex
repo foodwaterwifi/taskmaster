@@ -1,33 +1,57 @@
-<h1>Task</h1>
+<h3>Task</h3>
 
 <ul>
-
   <li>
     <strong>Title:</strong>
     <%= @task.title %>
   </li>
-
   <li>
     <strong>Desc:</strong>
     <%= @task.desc %>
   </li>
-
   <li>
     <strong>Assignee:</strong>
-    <%= if @task.user do @task.user.username else "" end %>
+    <%= if @task.assignee do @task.assignee.username else "" end %>
   </li>
-
   <li>
     <strong>Completed:</strong>
     <%= @task.completed %>
   </li>
-
   <li>
-    <strong>Time spent:</strong>
-    <%= Integer.to_string(@task.time_spent) <> " minutes" %>
+    <strong>Time Spent:</strong>
+    <span id="time-spent-display"><%= calculate_time_spent(@task) %></span>
   </li>
-
 </ul>
+
+<script>
+  window.time_block_path = "<%= Routes.time_block_path(@conn, :create)%>"
+</script>
+
+<%= if @current_user && @current_user.id == @task.assignee_id do %>
+  <h3>Time Log <a href="https://www.epochconverter.com/">(handy date to unix timestamp converter)</a></h3>
+  <div id="time-logger">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Start Time</th>
+          <th scope="col">End Time</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for time_block <- @task.time_blocks do %>
+          <%= render "time_block.html", time_block: time_block, row_type: :normal %>
+        <% end %>
+        <tr id="time-logger-table-anchor"></tr>
+        <%= render "time_block.html", time_block: %{:id => 0, :start_time => 0, :end_time => 0}, row_type: :template %>
+        <%= render "time_block.html", time_block: %{:id => 0, :start_time => 0, :end_time => 0}, row_type: :input, task_id: @task.id %>
+      </tbody>
+    </table>
+
+    <button id="time-logger-log-start" class="btn btn-primary mb-3">Start Logging</button>
+    <button id="time-logger-log-stop" data-task-id="<%= @task.id %>" class="btn btn-secondary mb-3">Stop Logging</button>
+  </div>
+<% end %>
 
 <span><%= link "Edit", to: Routes.task_path(@conn, :edit, @task), class: "btn btn-primary" %></span>
 <span><%= link "Back", to: Routes.task_path(@conn, :index), class: "btn btn-primary" %></span>

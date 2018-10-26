@@ -1,0 +1,40 @@
+<tr
+  <%= cond do %>
+  <% @row_type == :input ->%>id="time-block-input-row"
+  <% @row_type == :template ->%>id="time-block-template-row" hidden data-time-block-id="0"
+  <% @row_type == :normal ->%>class="time-block-normal-row" data-time-block-id="<%= @time_block.id %>"
+  <% true -> %><% end %>
+  >
+  <%= if @row_type == :input do %>
+    <td>
+      <input type="number" min="0" class="time-block-start-time-input">
+    </td>
+    <td>
+      <input type="number" min="0" class="time-block-end-time-input">
+    </td>
+  <% else %>
+    <td>
+      <input type="number" min="0" class="time-block-start-time-input" hidden>
+      <span class="time-block-start-time-span"><%= @time_block.start_time %></span>
+    </td>
+    <td>
+      <input type="number" min="0" class="time-block-end-time-input" hidden>
+      <span class="time-block-end-time-span"><%= @time_block.end_time %></span>
+    </td>
+  <% end %>
+  <td>
+    <%= if @row_type == :input do %>
+      <button class="time-block-add-button btn btn-primary"
+        data-task-id="<%= @task_id %>">Add</button>
+    <% else %>
+      <button class="time-block-edit-button btn btn-primary">Edit</button>
+      <button
+        class="time-block-delete-button btn btn-secondary"
+        data-time-block-id="<%= @time_block.id %>">Delete</button>
+      <button
+        class="time-block-save-button btn btn-primary"
+        data-time-block-id="<%= @time_block.id %>" hidden>Save</button>
+      <button class="time-block-cancel-button btn btn-secondary" hidden>Cancel</button>
+    <% end %>
+  </td>
+</tr>

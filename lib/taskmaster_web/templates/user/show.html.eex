@@ -1,8 +1,58 @@
-<h1>User Profile</h1>
+<h3>User Profile</h3>
 
-<strong>Username:</strong>
-<%= @user.username %>
+<ul>
+  <li>
+    <strong>Username:</strong>
+    <%= @user.username %>
+  </li>
+  <li>
+    <strong>Manager:</strong>
+    <%= if @user.manager do @user.manager.username end %>
+  </li>
+</ul>
 
-<p>Nothing to see here.</p>
+<%= if @user.manager != nil do %>
+  <%= link "Manager Profile", to: Routes.user_path(@conn, :show, @user.manager), class: "btn btn-primary mb-3" %>
+  <%= if @current_user && @current_user.id == @user.id do %>
+    <%= form_for @set_as_manager_cset, Routes.user_path(@conn, :update, @current_user), [method: :put], fn f -> %>
+      <%= hidden_input f, :id %>
+      <%= hidden_input f, :manager_id, value: nil %>
+
+      <%= submit "Leave Manager", class: "btn btn-secondary mb-3" %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<h3>Underlings</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for user <- @managees do %>
+      <tr>
+        <td><%= user.username %></td>
+        <td>
+          <%= link "Profile", to: Routes.user_path(@conn, :show, user), class: "btn btn-primary" %>
+          <%= if @current_user && @current_user.id == @user.id do %>
+            <%= link "Task Report", to: Routes.user_report_path(@conn, :report, user), class: "btn btn-secondary" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </body>
+</table>
+
+<%= if @current_user && @current_user.id != @user.id && @current_user.manager_id != @user.id do %>
+  <%= form_for @set_as_manager_cset, Routes.user_path(@conn, :update, @current_user), [method: :put], fn f -> %>
+    <%= hidden_input f, :id %>
+    <%= hidden_input f, :manager_id %>
+
+    <%= submit "Enlist", class: "btn btn-primary mb-3" %>
+  <% end %>
+<% end %>
 
 <span><%= link "Back", to: Routes.user_path(@conn, :index), class: "btn btn-primary" %></span>
