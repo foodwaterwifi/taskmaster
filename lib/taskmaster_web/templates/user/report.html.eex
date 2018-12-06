@@ -13,7 +13,7 @@
       <%= for task <- @tasks do %>
         <tr>
           <td><%= task.title %></td>
-          <td><%= task.completed %></td>
+          <td><%= if task.completed do "☑" else "☐" end %></td>
           <td><%= TaskmasterWeb.TaskView.calculate_time_spent(task) %></td>
           <td><%= link "Show", to: Routes.task_path(@conn, :show, task), class: "btn btn-secondary" %></td>
         </tr>
