@@ -17,7 +17,7 @@
       <td scope="row"><%= task.title %></td>
       <td><%= task.desc %></td>
       <td><%= if task.assignee do task.assignee.username else "" end %></td>
-      <td><%= task.completed %></td>
+      <td><%= if task.completed do "☑" else "☐" end %></td>
       <td><%= calculate_time_spent(task) %></td>
 
       <td>

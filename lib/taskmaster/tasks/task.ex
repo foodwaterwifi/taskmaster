@@ -33,7 +33,7 @@ defmodule Taskmaster.Tasks.Task do
     IO.inspect assigned_by
     if new_name do
       assignee = Taskmaster.Users.get_user_by_username(new_name)
-      changed_by_manager = assignee && assignee.manager_id && (assignee.manager_id == assigned_by)
+      changed_by_manager = assignee && assignee.manager_id && (assignee.manager_id == assigned_by || assignee.id == assigned_by)
       cond do
         assignee == nil ->
           add_error(changeset, :new_assignee_name, "user does not exist.")

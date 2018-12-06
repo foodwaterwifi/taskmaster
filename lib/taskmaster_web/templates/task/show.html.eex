@@ -1,27 +1,20 @@
-<h3>Task</h3>
+<h2>Task: <%= @task.title %> </h2>
 
-<ul>
-  <li>
-    <strong>Title:</strong>
-    <%= @task.title %>
-  </li>
-  <li>
-    <strong>Desc:</strong>
-    <%= @task.desc %>
-  </li>
-  <li>
-    <strong>Assignee:</strong>
-    <%= if @task.assignee do @task.assignee.username else "" end %>
-  </li>
-  <li>
-    <strong>Completed:</strong>
-    <%= @task.completed %>
-  </li>
-  <li>
-    <strong>Time Spent:</strong>
-    <span id="time-spent-display"><%= calculate_time_spent(@task) %></span>
-  </li>
-</ul>
+<h4>
+  <strong>Description:</strong> <%= @task.desc %>
+</h4>
+<h4>
+  <strong>Assignee:</strong> <%= if @task.assignee do @task.assignee.username else "" end %>
+</h4>
+<%= if @task.assignee do %>
+<%= link "Assignee Profile", to: Routes.user_path(@conn, :show, @task.assignee), class: "btn btn-primary" %>
+<% end %>
+<h4>
+  <strong>Completed:</strong> <%= if @task.completed do "☑" else "☐" end %>
+</h4>
+<h4>
+  <strong>Time Spent:</strong> <span id="time-spent-display"><%= calculate_time_spent(@task) %></span>
+</h4>
 
 <script>
   window.time_block_path = "<%= Routes.time_block_path(@conn, :create)%>"
