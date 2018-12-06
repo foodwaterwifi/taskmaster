@@ -1,5 +1,5 @@
-<%= if @current_user do %>
-  <h1>Task Report for "<%= @current_user.username %>"</h1>
+<%= if @user do %>
+  <h1><%= @user.username %>'s Task Report</h1>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -15,8 +15,7 @@
           <td><%= task.title %></td>
           <td><%= task.completed %></td>
           <td><%= TaskmasterWeb.TaskView.calculate_time_spent(task) %></td>
-          <td>
-          </td>
+          <td><%= link "Show", to: Routes.task_path(@conn, :show, task), class: "btn btn-secondary" %></td>
         </tr>
       <% end %>
     </body>

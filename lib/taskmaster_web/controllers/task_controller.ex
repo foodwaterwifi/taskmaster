@@ -15,6 +15,9 @@ defmodule TaskmasterWeb.TaskController do
   end
 
   def create(conn, %{"task" => task_params}) do
+    current_user = conn.assigns[:current_user]
+    current_user_id = if current_user do current_user.id else nil end
+    task_params = Map.put(task_params, "assigned_by", current_user_id)
     case Tasks.create_task(task_params) do
       {:ok, task} ->
         conn
@@ -40,8 +43,6 @@ defmodule TaskmasterWeb.TaskController do
   def update(conn, %{"id" => id, "task" => task_params}) do
     task = Tasks.get_task!(id)
     current_user = conn.assigns[:current_user]
-    IO.puts "Here's my conn for edit"
-    IO.inspect conn
     current_user_id = if current_user do current_user.id else nil end
     task_params = Map.put(task_params, "assigned_by", current_user_id)
     IO.inspect task_params

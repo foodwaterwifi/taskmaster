@@ -36,9 +36,9 @@ defmodule TaskmasterWeb.UserController do
   end
 
   def report(conn, %{"user_id" => id}) do
-    #user = Users.get_user!(id)
+    user = Users.get_user!(id)
     tasks =  Users.list_user_tasks(id)
-    render(conn, "report.html", tasks: tasks)
+    render(conn, "report.html", tasks: tasks, user: user)
   end
 
   def edit(conn, %{"id" => id}) do

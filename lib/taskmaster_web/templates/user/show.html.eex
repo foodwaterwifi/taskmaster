@@ -1,15 +1,8 @@
-<h3>User Profile</h3>
+<h3><%= @user.username %>'s Profile</h3>
 
-<ul>
-  <li>
-    <strong>Username:</strong>
-    <%= @user.username %>
-  </li>
-  <li>
-    <strong>Manager:</strong>
-    <%= if @user.manager do @user.manager.username end %>
-  </li>
-</ul>
+<h4><strong>Manager:</strong>
+<%= if @user.manager do @user.manager.username end %>
+</h4>
 
 <%= if @user.manager != nil do %>
   <%= link "Manager Profile", to: Routes.user_path(@conn, :show, @user.manager), class: "btn btn-primary mb-3" %>
@@ -51,7 +44,7 @@
     <%= hidden_input f, :id %>
     <%= hidden_input f, :manager_id %>
 
-    <%= submit "Enlist", class: "btn btn-primary mb-3" %>
+    <%= submit "Become Underling", class: "btn btn-primary mb-3" %>
   <% end %>
 <% end %>
 

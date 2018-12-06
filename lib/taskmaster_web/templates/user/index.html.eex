@@ -12,7 +12,6 @@
 <%= for user <- @users do %>
     <tr>
       <td><%= user.username %></td>
-
       <td>
         <%= link "Profile", to: Routes.user_path(@conn, :show, user), class: "btn btn-secondary" %>
       <%= if @current_user && @current_user.username == "admin" && user.username != "admin" do %>
